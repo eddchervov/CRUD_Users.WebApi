@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CRUD_Users.WebApi.Controllers
 {
+    [ApiController]
     [Route("api/user-logs")]
-    public class UserLogApiController : Controller
+    public class UserLogApiController : ControllerBase
     {
         private readonly IUserLogService _userLogService;
 

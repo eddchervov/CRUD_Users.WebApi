@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CRUD_Users.WebApi.Controllers
 {
+    [ApiController]
     [Route("api/users")]
-    public class UserApiController : Controller
+    public class UserApiController : ControllerBase
     {
         private readonly IUserService _userService;
         public UserApiController(IUserService userService)
