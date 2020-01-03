@@ -11,11 +11,6 @@ namespace CRUD_Users.Api.Models.User
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
 
-        public bool IsActive { get; set; }
-
-        public DateTime ChangedDate { get; set; }
-        public DateTime CreatedDate { get; set; }
-
         public string FullName
         {
             get
@@ -33,5 +28,10 @@ namespace CRUD_Users.Api.Models.User
                 return LastName + firstNameInitial + patronymicInitial;
             }
         }
+
+        public bool IsActive { get; set; }
+
+        public DateTime ChangedDate { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

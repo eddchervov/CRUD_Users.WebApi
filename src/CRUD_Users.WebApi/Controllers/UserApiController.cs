@@ -1,6 +1,6 @@
 ﻿using CRUD_Users.Api.Models.User;
 using CRUD_Users.BL.Services;
-using Goober.Core.Extensions;
+using CRUD_Users.Utils.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -19,7 +19,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("get")]
         public async Task<GetUsersResponse> GetAsync([FromBody]GetUsersRequest request)
         {
-            request.RequiredNotNull("GetRequest is null");
+            request.RequiredNotNull("GetRequest", "object is null");
 
             return await _userService.GetAsync(request);
         }
@@ -27,7 +27,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("create")]
         public async Task<CreateUserResponse> CreateAsync([FromBody]CreateUserRequest request)
         {
-            request.RequiredNotNull("CreateRequest is null");
+            request.RequiredNotNull("CreateRequest", "object is null");
 
             return await _userService.CreateAsync(request);
         }
@@ -35,7 +35,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("update")]
         public async Task<UpdateUserResponse> UpdateAsync([FromBody]UpdateUserRequest request)
         {
-            request.RequiredNotNull("UpdateRequest is null");
+            request.RequiredNotNull("UpdateRequest", "object is null");
 
             return await _userService.UpdateAsync(request);
         }

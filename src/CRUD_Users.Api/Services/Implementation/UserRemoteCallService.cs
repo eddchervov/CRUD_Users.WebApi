@@ -1,5 +1,4 @@
 ﻿using CRUD_Users.Api.Models.User;
-using Goober.Core.Services;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
@@ -7,8 +6,8 @@ namespace CRUD_Users.Api.Services.Implementation
 {
     internal class UserRemoteCallService : BaseRemoteCallService, IUserRemoteCallService
     {
-        public UserRemoteCallService(ICacheProvider cacheProvider, IConfiguration configuration)
-            : base(cacheProvider, configuration)
+        public UserRemoteCallService(IConfiguration configuration)
+            : base(configuration)
         { }
 
         protected override string _apiSchemeAndHostConfigKey { get; set; } = "CRUD_Users.Api.SchemeAndHost";

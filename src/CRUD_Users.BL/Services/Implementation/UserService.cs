@@ -2,7 +2,7 @@
 using CRUD_Users.DAL.Entities;
 using CRUD_Users.DAL.Models.Users;
 using CRUD_Users.DAL.Repositories;
-using Goober.Core.Extensions;
+using CRUD_Users.Utils.Extensions;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

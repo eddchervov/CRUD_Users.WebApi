@@ -1,6 +1,6 @@
 ﻿using CRUD_Users.Api.Models.UserLog;
 using CRUD_Users.BL.Services;
-using Goober.Core.Extensions;
+using CRUD_Users.Utils.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -20,7 +20,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("get-by-user-id")]
         public async Task<GetUserLogsResponse> GetAsync([FromBody]GetUserLogRequest request)
         {
-            request.RequiredNotNull("GetRequest is null");
+            request.RequiredNotNull("GetRequest", "object is null");
 
             return await _userLogService.GetAsync(request);
         }

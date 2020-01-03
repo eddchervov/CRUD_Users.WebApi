@@ -6,7 +6,9 @@ namespace CRUD_Users.DAL.DBContext.Implementation
     internal class AppDBContext : BaseDbContext, IAppDBContext
     {
         public AppDBContext(DbContextOptions<AppDBContext> options) : base(options)
-        { }
+        {
+            Database.EnsureCreated(); // создаем базу данных при первом обращении
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserLog> UserLogs { get; set; }
