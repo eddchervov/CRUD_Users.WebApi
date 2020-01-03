@@ -16,10 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CRUD_Users.WebApi.Utils\CRUD_Users.Utils.csproj" />
     <ProjectReference Include="..\CRUD_Users.Api\CRUD_Users.Api.csproj" />
     <ProjectReference Include="..\CRUD_Users.BL\CRUD_Users.BL.csproj" />
     <ProjectReference Include="..\CRUD_Users.DAL\CRUD_Users.DAL.csproj" />
+    <ProjectReference Include="..\CRUD_Users.Utils\CRUD_Users.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
