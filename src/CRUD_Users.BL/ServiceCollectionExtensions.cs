@@ -1,9 +1,6 @@
 ﻿using CRUD_Users.BL.Services;
 using CRUD_Users.BL.Services.Implementation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CRUD_Users.BL
 {

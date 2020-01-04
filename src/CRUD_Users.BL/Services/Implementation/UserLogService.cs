@@ -1,10 +1,7 @@
 ﻿using CRUD_Users.Api.Models.UserLog;
 using CRUD_Users.DAL.Entities;
 using CRUD_Users.DAL.Repositories;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CRUD_Users.BL.Services.Implementation
@@ -21,11 +18,9 @@ namespace CRUD_Users.BL.Services.Implementation
         public async Task<GetUserLogsResponse> GetAsync(GetUserLogRequest request)
         {
             var userLogs = await _userLogRepository.GetByUserId(request.UserId);
+            var userLogModels = userLogs.Select(ConvertModel).ToList();
 
-            return new GetUserLogsResponse
-            {
-                UserLogModels = userLogs.Select(ConvertModel).ToList()
-            };
+            return new GetUserLogsResponse { UserLogModels = userLogModels };
         }
 
         #region private

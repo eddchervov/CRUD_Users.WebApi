@@ -23,23 +23,21 @@ namespace CRUD_Users.BL.Services.Implementation
 
         public async Task<GetUsersResponse> GetAsync(GetUsersRequest request)
         {
-            var response = await _userRepository.GetAsync(new GetUsersDalRequest
-            {
-                SkipCount = request.SkipCount,
-                TakeCount = request.TakeCount,
-                IsActive = request.IsActive
-            });
+            var usersDalRequest = ConvertModel(request);
+            var response = await _userRepository.GetAsync(usersDalRequest);
+
+            var userModels = response.Users.Select(ConvertModel).ToList();
 
             return new GetUsersResponse
             {
                 TotalCount = response.TotalCount,
-                Users = response.Users.Select(ConvertModel).ToList()
+                Users = userModels
             };
         }
 
         public async Task<CreateUserResponse> CreateAsync(CreateUserRequest request)
         {
-            var user = ConvertModel(request);
+            var user = CreateUserModel(request);
             await _userRepository.InsertAsync(user);
 
             var userLog = CreateUserLog(user);
@@ -51,21 +49,31 @@ namespace CRUD_Users.BL.Services.Implementation
         public async Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request)
         {
             var user = await _userRepository.GetByIdAsync(request.Id);
-            user.RequiredNotNull("User is null, id=" + request.Id);
+            user.RequiredNotNull("User", "object is null, id=" + request.Id);
 
             var tupleUpdate = UpdateModel(ref user, request);
 
-            if (tupleUpdate.isUpdate)
+            if (tupleUpdate.IsUpdate)
             {
                 await _userRepository.UpdateAsync(user);
-                await _userLogRepository.InsertAsync(tupleUpdate.userLog);
+                await _userLogRepository.InsertAsync(tupleUpdate.UserLog);
             }
 
-            return new UpdateUserResponse { IsUpdate = tupleUpdate.isUpdate };
+            return new UpdateUserResponse { IsUpdate = tupleUpdate.IsUpdate };
         }
 
         #region private
-        private (bool isUpdate, UserLog userLog) UpdateModel(ref User user, UpdateUserRequest userRequest)
+        private GetUsersDalRequest ConvertModel(GetUsersRequest request)
+        {
+            return new GetUsersDalRequest
+            {
+                SkipCount = request.SkipCount,
+                TakeCount = request.TakeCount,
+                IsActive = request.IsActive
+            };
+        }
+
+        private (bool IsUpdate, UserLog UserLog) UpdateModel(ref User user, UpdateUserRequest userRequest)
         {
             var isUpdate = false;
 
@@ -106,7 +114,7 @@ namespace CRUD_Users.BL.Services.Implementation
             return (isUpdate, userLog);
         }
 
-        private User ConvertModel(CreateUserRequest request)
+        private User CreateUserModel(CreateUserRequest request)
         {
             return new User
             {
