@@ -30,7 +30,6 @@ namespace CRUD_Users.BL.Services.Implementation
         {
             return new UserLogModel
             {
-                Id = userLog.Id,
                 Created = userLog.Created,
                 LastName = userLog.LastName,
                 FirstName = userLog.FirstName,
