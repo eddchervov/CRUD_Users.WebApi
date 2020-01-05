@@ -11,5 +11,6 @@ namespace CRUD_Users.DAL.Repositories
     {
         Task<GetUsersDalResponse> GetAsync(GetUsersDalRequest request);
         Task<User> GetByIdAsync(long id);
+        User GetById(long id);
     }
 }

@@ -2,7 +2,6 @@
 using CRUD_Users.DAL.Entities;
 using CRUD_Users.DAL.Models.Users;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,6 +41,11 @@ namespace CRUD_Users.DAL.Repositories.Implementation
                 TotalCount = totalCount,
                 Users = await query.ToListAsync()
             };
+        }
+
+        public User GetById(long id)
+        {
+            return _context.Users.FirstOrDefault(x => x.Id == id);
         }
 
         public async Task<User> GetByIdAsync(long id)

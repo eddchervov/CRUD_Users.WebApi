@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CRUD_Users.Api.Models.User
 {
@@ -24,8 +22,8 @@ namespace CRUD_Users.Api.Models.User
             get
             {
                 string firstNameInitial = $" {FirstName[0]}.";
-                string patronymicInitial = string.IsNullOrEmpty(MiddleName) ? "" : $" {MiddleName[0]}.";
-                return LastName + firstNameInitial + patronymicInitial;
+                string middleNameInitial = string.IsNullOrEmpty(MiddleName) ? "" : $"{MiddleName[0]}.";
+                return LastName + firstNameInitial + middleNameInitial;
             }
         }
 

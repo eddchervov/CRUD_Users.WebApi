@@ -8,6 +8,6 @@ namespace CRUD_Users.DAL.Repositories
 {
     public interface IUserLogRepository : IBaseRepository<UserLog>
     {
-        Task<List<UserLog>> GetByUserId(long userId);
+        Task<List<UserLog>> GetByUserIdAsync(long userId);
     }
 }

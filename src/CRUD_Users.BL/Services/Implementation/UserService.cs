@@ -1,8 +1,10 @@
 ﻿using CRUD_Users.Api.Models.User;
+using CRUD_Users.DAL.DBContext;
 using CRUD_Users.DAL.Entities;
 using CRUD_Users.DAL.Models.Users;
 using CRUD_Users.DAL.Repositories;
 using CRUD_Users.Utils.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,53 +15,101 @@ namespace CRUD_Users.BL.Services.Implementation
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserLogRepository _userLogRepository;
+        private readonly ILogger<UserService> _logger;
+        private readonly IAppDBContext _appDBContext;
 
         public UserService(IUserRepository userRepository,
-            IUserLogRepository userLogRepository)
+            IUserLogRepository userLogRepository,
+            ILogger<UserService> logger,
+            IAppDBContext appDBContext)
         {
             _userRepository = userRepository;
             _userLogRepository = userLogRepository;
+            _logger = logger;
+            _appDBContext = appDBContext;
         }
 
         public async Task<GetUsersResponse> GetAsync(GetUsersRequest request)
         {
+            var response = new GetUsersResponse();
+
             var usersDalRequest = ConvertModel(request);
-            var response = await _userRepository.GetAsync(usersDalRequest);
+            var usersDalResponse = await _userRepository.GetAsync(usersDalRequest);
 
-            var userModels = response.Users.Select(ConvertModel).ToList();
+            response.TotalCount = usersDalResponse.TotalCount;
+            response.Users = usersDalResponse.Users.Select(ConvertModel).ToList();
 
-            return new GetUsersResponse
-            {
-                TotalCount = response.TotalCount,
-                Users = userModels
-            };
+            return response;
         }
 
         public async Task<CreateUserResponse> CreateAsync(CreateUserRequest request)
         {
-            var user = CreateUserModel(request);
-            await _userRepository.InsertAsync(user);
+            var response = new CreateUserResponse();
 
-            var userLog = CreateUserLog(user);
-            await _userLogRepository.InsertAsync(userLog);
+            using (var transaction = _appDBContext.BeginTransaction())
+            {
+                try
+                {
+                    var user = CreateUserModel(request);
+                    await _userRepository.InsertAsync(user);
 
-            return new CreateUserResponse { UserId = user.Id };
+                    var userLog = CreateUserLog(user);
+                    await _userLogRepository.InsertAsync(userLog);
+
+                    await transaction.CommitAsync();
+
+                    var userModel = await _userRepository.GetByIdAsync(user.Id);
+                    response.User = ConvertModel(userModel);
+                }
+                catch (Exception ex)
+                {
+                    response.IsSuccess = false;
+                    response.Message = ex.Message;
+                    _logger.LogError(JsonExtensions.Serialize(ex));
+                }
+            }
+
+            return response;
         }
 
         public async Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request)
         {
+            var response = new UpdateUserResponse();
+
             var user = await _userRepository.GetByIdAsync(request.Id);
-            user.RequiredNotNull("User", "object is null, id=" + request.Id);
+            if (user == null)
+            {
+                response.IsSuccess = false;
+                response.Message = "User not found, id=" + request.Id;
+            }
 
             var tupleUpdate = UpdateModel(ref user, request);
+            var userLog = tupleUpdate.UserLog;
 
             if (tupleUpdate.IsUpdate)
             {
-                await _userRepository.UpdateAsync(user);
-                await _userLogRepository.InsertAsync(tupleUpdate.UserLog);
+                using (var transaction = _appDBContext.BeginTransaction())
+                {
+                    try
+                    {
+                        await _userRepository.UpdateAsync(user);
+                        await _userLogRepository.InsertAsync(userLog);
+
+                        await transaction.CommitAsync();
+
+                        var userModel = await _userRepository.GetByIdAsync(user.Id);
+                        response.User = ConvertModel(userModel);
+                    }
+                    catch (Exception ex)
+                    {
+                        response.IsSuccess = false;
+                        response.Message = ex.Message;
+                        _logger.LogError(JsonExtensions.Serialize(ex));
+                    }
+                }
             }
 
-            return new UpdateUserResponse { IsUpdate = tupleUpdate.IsUpdate };
+            return response;
         }
 
         #region private

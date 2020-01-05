@@ -3,6 +3,7 @@ using CRUD_Users.DAL.DBContext.Implementation;
 using CRUD_Users.DAL.Repositories;
 using CRUD_Users.DAL.Repositories.Implementation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -21,7 +22,7 @@ namespace CRUD_Users.DAL
             services.AddScoped<IAppDBContext, AppDBContext>();
         }
 
-        public static void RegisterDALServices(this IServiceCollection services)
+        public static void RegisterDALServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserLogRepository, UserLogRepository>();

@@ -22,9 +22,10 @@ namespace CRUD_Users.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterDbContext(() => Configuration.GetConnectionString("APPDB"));
-            services.RegisterAPIServices();
-            services.RegisterBLServices();
-            services.RegisterDALServices();
+
+            services.RegisterAPIServices(Configuration);
+            services.RegisterBLServices(Configuration);
+            services.RegisterDALServices(Configuration);
 
             services.AddControllers();
 
@@ -77,7 +78,7 @@ namespace CRUD_Users.WebApi
 
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "OnlineStore V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRUD_Users.WebApi V1");
                 c.RoutePrefix = string.Empty;
             });
         }

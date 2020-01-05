@@ -19,7 +19,7 @@ namespace CRUD_Users.DAL.Repositories.Implementation
             _context = context;
         }
 
-        public async Task<List<UserLog>> GetByUserId(long userId)
+        public async Task<List<UserLog>> GetByUserIdAsync(long userId)
         {
             return await _context.UserLogs.Where(x => x.UserId == userId).ToListAsync();
         }

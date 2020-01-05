@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CRUD_Users.Api.Models.User
 {
-    public class CreateUserResponse
+    public class CreateUserResponse : BaseResponse
     {
-        public long UserId { get; set; }
+        public UserModel User { get; set; }
     }
 }

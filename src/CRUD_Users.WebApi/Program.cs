@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using NLog.Web;
 using System;
 
 namespace CRUD_Users.WebApi
@@ -32,6 +33,7 @@ namespace CRUD_Users.WebApi
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseNLog();  // NLog: Setup NLog for Dependency injection);
     }
 }

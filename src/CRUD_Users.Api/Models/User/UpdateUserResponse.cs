@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CRUD_Users.Api.Models.User
 {
-    public class UpdateUserResponse
+    public class UpdateUserResponse : BaseResponse
     {
-        public bool IsUpdate { get; set; }
+        public UserModel User { get; set; }
     }
 }
