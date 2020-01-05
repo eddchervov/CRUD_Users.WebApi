@@ -17,12 +17,12 @@ namespace CRUD_Users.BL.Services.Implementation
 
         public async Task<GetUserLogsResponse> GetAsync(GetUserLogRequest request)
         {
-            var resposne = new GetUserLogsResponse();
+            var response = new GetUserLogsResponse();
 
             var userLogs = await _userLogRepository.GetByUserIdAsync(request.UserId);
-            resposne.UserLogModels = userLogs.Select(ConvertModel).ToList();
+            response.UserLogModels = userLogs.Select(ConvertModel).ToList();
 
-            return resposne;
+            return response;
         }
 
         #region private
