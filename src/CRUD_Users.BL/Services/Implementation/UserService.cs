@@ -58,8 +58,7 @@ namespace CRUD_Users.BL.Services.Implementation
 
                     await transaction.CommitAsync();
 
-                    var userModel = await _userRepository.GetByIdAsync(user.Id);
-                    response.User = ConvertModel(userModel);
+                    response.User = ConvertModel(user);
                 }
                 catch (Exception ex)
                 {
@@ -97,8 +96,7 @@ namespace CRUD_Users.BL.Services.Implementation
 
                         await transaction.CommitAsync();
 
-                        var userModel = await _userRepository.GetByIdAsync(user.Id);
-                        response.User = ConvertModel(userModel);
+                        response.User = ConvertModel(user);
                     }
                     catch (Exception ex)
                     {
