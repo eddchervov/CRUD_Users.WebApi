@@ -20,7 +20,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("get-by-user-id")]
         public async Task<GetUserLogsResponse> GetAsync([FromBody]GetUserLogRequest request)
         {
-            request.RequiredNotNull("GetRequest", "object is null");
+            request.RequiredNotNull(nameof(GetUserLogRequest), "object is null");
 
             return await _userLogService.GetAsync(request);
         }
