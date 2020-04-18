@@ -19,7 +19,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("get")]
         public async Task<GetUsersResponse> GetAsync([FromBody]GetUsersRequest request)
         {
-            request.RequiredNotNull("GetRequest", "object is null");
+            request.RequiredNotNull(nameof(GetUsersRequest), "object is null");
 
             return await _userService.GetAsync(request);
         }
@@ -27,7 +27,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("create")]
         public async Task<CreateUserResponse> CreateAsync([FromBody]CreateUserRequest request)
         {
-            request.RequiredNotNull("CreateRequest", "object is null");
+            request.RequiredNotNull(nameof(CreateUserRequest), "object is null");
 
             return await _userService.CreateAsync(request);
         }
@@ -35,7 +35,7 @@ namespace CRUD_Users.WebApi.Controllers
         [HttpPost("update")]
         public async Task<UpdateUserResponse> UpdateAsync([FromBody]UpdateUserRequest request)
         {
-            request.RequiredNotNull("UpdateRequest", "object is null");
+            request.RequiredNotNull(nameof(UpdateUserRequest), "object is null");
 
             return await _userService.UpdateAsync(request);
         }
